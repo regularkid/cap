@@ -21,12 +21,24 @@
     <ClCompile Include="..\Code\Cap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Code\Scanner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Token.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Code\Utils.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Code\Cap.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Token.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Scanner.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

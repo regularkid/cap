@@ -4,9 +4,9 @@
 // ----------------------------------------------------------------------------
 void Cap::Run(const std::string& source)
 {
-    LOG("%s", source.c_str());
-
     // Scan tokens
+    Tokens tokens = m_scanner.ScanTokens(source);
+    PrintTokens(tokens);
 
     // Generate bytecode
 
