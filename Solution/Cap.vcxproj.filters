@@ -18,9 +18,15 @@
     <ClCompile Include="..\Code\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Code\Cap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Code\Utils.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Cap.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
