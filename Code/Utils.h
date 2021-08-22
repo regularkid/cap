@@ -1,0 +1,1 @@
+#define LOG(s, ...) printf(s,  __VA_ARGS__); printf("\n");
