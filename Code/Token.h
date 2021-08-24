@@ -4,6 +4,8 @@
 
 enum class TokenType
 {
+    None,
+
     // Single characters symbols
     BraceLeft,
     BraceRight,
@@ -49,9 +51,9 @@ enum class TokenType
 
 struct Token
 {
-    TokenType m_type;
-    const char* m_sourceStart;
-    const char* m_sourceEnd;
+    TokenType m_type = TokenType::None;
+    const char* m_sourceStart = nullptr;
+    const char* m_sourceEnd = nullptr;
 };
 
 using Tokens = std::vector<Token>;

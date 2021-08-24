@@ -5,6 +5,7 @@ const char* TokenTypeToString(const Token& token)
 {
     switch (token.m_type)
     {
+        case TokenType::None: return "[None]";
         case TokenType::BraceLeft: return "[BraceLeft]";
         case TokenType::BraceRight: return "[BraceRight]";
         case TokenType::Comma: return "[Comma]";
@@ -44,9 +45,7 @@ const char* TokenTypeToString(const Token& token)
 
 void PrintToken(const Token& token)
 {
-    if (token.m_type == TokenType::Identifier ||
-        token.m_type == TokenType::Number ||
-        token.m_type == TokenType::String)
+    if (token.m_type != TokenType::EndOfFile)
     {
         LOG("%s:[%.*s]", TokenTypeToString(token), int(token.m_sourceEnd - token.m_sourceStart), token.m_sourceStart);
     }
