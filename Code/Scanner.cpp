@@ -62,7 +62,7 @@ Tokens Scanner::ScanTokens(const std::string& source)
 
         // Match token?
         bool foundMatch = false;
-        auto itr = matches.find(*sourceCur);
+        auto itr = matches.find(c);
         if (itr != matches.end())
         {
             for (const TokenMatch& match : itr->second)
@@ -70,9 +70,9 @@ Tokens Scanner::ScanTokens(const std::string& source)
                 bool isMatch = true;
                 int matchLength = (int)match.m_text.size();
                 const char* testCur = sourceCur;
-                for (const char c : match.m_text)
+                for (const char cMatch : match.m_text)
                 {
-                    if (testCur >= sourceEnd || *testCur != c)
+                    if (testCur >= sourceEnd || *testCur != cMatch)
                     {
                         isMatch = false;
                         break;
