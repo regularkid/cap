@@ -54,6 +54,7 @@ struct Token
     TokenType m_type = TokenType::None;
     const char* m_sourceStart = nullptr;
     const char* m_sourceEnd = nullptr;
+    int m_line = -1;
 };
 
 using Tokens = std::vector<Token>;

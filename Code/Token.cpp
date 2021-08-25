@@ -47,11 +47,11 @@ void PrintToken(const Token& token)
 {
     if (token.m_type != TokenType::EndOfFile)
     {
-        LOG("%s:[%.*s]", TokenTypeToString(token), int(token.m_sourceEnd - token.m_sourceStart), token.m_sourceStart);
+        LOG("%s:[%.*s]:%d", TokenTypeToString(token), int(token.m_sourceEnd - token.m_sourceStart), token.m_sourceStart, token.m_line);
     }
     else
     {
-        LOG("%s", TokenTypeToString(token));
+        LOG("%s:%d", TokenTypeToString(token), token.m_line);
     }
 }
 
