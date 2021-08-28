@@ -8,5 +8,5 @@ for(;;)
     blah=12.34.;
     ""
     "this is a string""another string123;lksjf"
-    "error no terminator
+    //"error no terminator
 }

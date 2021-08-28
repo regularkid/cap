@@ -143,12 +143,17 @@
     <ClCompile Include="..\Code\Main.cpp" />
     <ClCompile Include="..\Code\Scanner.cpp" />
     <ClCompile Include="..\Code\Token.cpp" />
+    <ClCompile Include="..\Code\VM.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Code\Bytecode.h" />
     <ClInclude Include="..\Code\Cap.h" />
+    <ClInclude Include="..\Code\Ops.h" />
     <ClInclude Include="..\Code\Scanner.h" />
     <ClInclude Include="..\Code\Token.h" />
     <ClInclude Include="..\Code\Utils.h" />
+    <ClInclude Include="..\Code\Value.h" />
+    <ClInclude Include="..\Code\VM.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
