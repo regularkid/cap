@@ -1,8 +1,12 @@
 for(;;)
 {
+    // Comment line
     false = 1;
-    false = 1234;
+    testIdentifier = 1234;
     false = 1.2;
-    false = 12.34;
-    false = 12.34.;
+    var myVar = 12.34;
+    blah=12.34.;
+    ""
+    "this is a string""another string123;lksjf"
+    "error no terminator
 }

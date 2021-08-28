@@ -17,14 +17,22 @@ void Scanner::ScanTokens(const std::string& source)
     while (m_sourceCur < m_sourceEnd)
     {
         if (ScanWhitespace() ||
+            ScanComment() ||
             ScanSymbolKeyword() ||
-            ScanNumber())
+            ScanNumber() ||
+            ScanString() ||
+            ScanIdentifier())
         {
             continue;
         }
 
-        LOG("Unexpected character '%c' at line %d", *m_sourceCur, m_line);
-        m_error = true;
+        // Scan function above may have already triggered an error
+        if (!m_error)
+        {
+            LOG("%d: Unexpected character '%c'", m_line, *m_sourceCur);
+            m_error = true;
+        }
+
         break;
     }
 
@@ -62,6 +70,27 @@ bool Scanner::ScanWhitespace()
     return false;
 }
 
+bool Scanner::ScanComment()
+{
+    const char* testCur = m_sourceCur;
+    if (*testCur == '/')
+    {
+        ++testCur;
+        if (testCur < m_sourceEnd && *testCur == '/')
+        {
+            while (testCur < m_sourceEnd && *testCur != '\n')
+            {
+                ++testCur;
+            }
+
+            m_sourceCur = testCur;
+            return true;
+        }
+    }
+
+    return false;
+}
+
 bool Scanner::ScanSymbolKeyword()
 {
     // Build matches table
@@ -90,10 +119,8 @@ bool Scanner::ScanSymbolKeyword()
     matches['v'] = { {"var", TokenType::Var} };
     matches['w'] = { {"while", TokenType::While} };
 
-    const char c = *m_sourceCur;
-
-    // Attempt to match token from matches table?
-    auto itr = matches.find(c);
+    // Attempt to match token from matches table
+    auto itr = matches.find(*m_sourceCur);
     if (itr != matches.end())
     {
         for (const TokenMatch& match : itr->second)
@@ -130,9 +157,8 @@ bool Scanner::ScanNumber()
         return false;
     }
 
-    bool isValidNumber = true;
     bool encounteredDecimal = false;
-    const char* testCur = m_sourceCur;
+    const char* testCur = m_sourceCur + 1;
     while (testCur < m_sourceEnd)
     {
         const char c = *testCur;
@@ -154,6 +180,56 @@ bool Scanner::ScanNumber()
     int numberLength = int(testCur - m_sourceCur);
     m_tokens.push_back(MakeToken(TokenType::Number, m_sourceCur, m_sourceCur + numberLength, m_line));
     m_sourceCur += numberLength;
+    return true;
+}
+
+bool Scanner::ScanString()
+{
+    if (*m_sourceCur != '"')
+    {
+        return false;
+    }
+
+    const char* testCur = m_sourceCur + 1;
+    while (testCur < m_sourceEnd && *testCur != '"')
+    {
+        if (*testCur == '\n')
+        {
+            m_line++;
+        }
+
+        ++testCur;
+    }
+
+    if (*testCur != '"')
+    {
+        LOG("%d: Expected string terminator", m_line);
+        m_error = true;
+        return false;
+    }
+
+    int strLength = int(testCur - m_sourceCur);
+    m_tokens.push_back(MakeToken(TokenType::String, m_sourceCur + 1, m_sourceCur + strLength, m_line));
+    m_sourceCur = ++testCur;
+    return true;
+}
+
+bool Scanner::ScanIdentifier()
+{
+    if (!isalpha(*m_sourceCur))
+    {
+        return false;
+    }
+
+    const char* testCur = m_sourceCur + 1;
+    while (testCur < m_sourceEnd && isalnum(*testCur))
+    {
+        ++testCur;
+    }
+
+    int identifierLength = int(testCur - m_sourceCur);
+    m_tokens.push_back(MakeToken(TokenType::Identifier, m_sourceCur, m_sourceCur + identifierLength, m_line));
+    m_sourceCur += identifierLength;
     return true;
 }
 

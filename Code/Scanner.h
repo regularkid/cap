@@ -12,8 +12,11 @@ public:
 
 private:
     bool ScanWhitespace();
+    bool ScanComment();
     bool ScanSymbolKeyword();
     bool ScanNumber();
+    bool ScanString();
+    bool ScanIdentifier();
     Token MakeToken(const TokenType type, const char* sourceStart, const char* sourceEnd, const int line);
 
     Tokens m_tokens;
