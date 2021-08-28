@@ -5,8 +5,8 @@
 void Cap::Run(const std::string& source)
 {
     // Scan tokens
-    Tokens tokens = m_scanner.ScanTokens(source);
-    PrintTokens(tokens);
+    m_scanner.ScanTokens(source);
+    PrintTokens(m_scanner.GetTokens());
     if (m_scanner.Error())
     {
         return;

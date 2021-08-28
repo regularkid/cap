@@ -8,12 +8,64 @@ struct TokenMatch
     TokenType m_tokenType;
 };
 
-Tokens Scanner::ScanTokens(const std::string& source)
+void Scanner::ScanTokens(const std::string& source)
 {
-    Tokens tokens;
+    // Scan...
+    m_line = 1;
+    m_sourceCur = source.c_str();
+    m_sourceEnd = source.c_str() + source.size();
+    while (m_sourceCur < m_sourceEnd)
+    {
+        if (ScanWhitespace() ||
+            ScanSymbolKeyword() ||
+            ScanNumber())
+        {
+            continue;
+        }
 
+        LOG("Unexpected character '%c' at line %d", *m_sourceCur, m_line);
+        m_error = true;
+        break;
+    }
+
+    // Always append newline at end of valid token stream
+    if (!m_error)
+    {
+        m_tokens.push_back(MakeToken(TokenType::EndOfFile, m_sourceEnd, m_sourceEnd, m_line));
+    }
+}
+
+bool Scanner::Error() const
+{
+    return m_error;
+}
+
+bool Scanner::ScanWhitespace()
+{
+    const char c = *m_sourceCur;
+
+    // Ignore whitespace
+    if (c == ' ' || c == '\r' || c == '\t')
+    {
+        ++m_sourceCur;
+        return true;
+    }
+
+    // Ignore newline
+    if (c == '\n')
+    {
+        ++m_sourceCur;
+        ++m_line;
+        return true;
+    }
+
+    return false;
+}
+
+bool Scanner::ScanSymbolKeyword()
+{
     // Build matches table
-    std::unordered_map<char, std::vector<TokenMatch>> matches;
+    static std::unordered_map<char, std::vector<TokenMatch>> matches;
     matches['{'] = { {"{", TokenType::BraceLeft} };
     matches['}'] = { {"}", TokenType::BraceRight} };
     matches[','] = { {",", TokenType::Comma} };
@@ -38,79 +90,71 @@ Tokens Scanner::ScanTokens(const std::string& source)
     matches['v'] = { {"var", TokenType::Var} };
     matches['w'] = { {"while", TokenType::While} };
 
-    // Scan...
-    int line = 1;
-    const char* sourceCur = source.c_str();
-    const char* sourceEnd = source.c_str() + source.size();
-    while (sourceCur < sourceEnd)
+    const char c = *m_sourceCur;
+
+    // Attempt to match token from matches table?
+    auto itr = matches.find(c);
+    if (itr != matches.end())
     {
-        // Ignore whitespace
-        const char c = *sourceCur;
-        if (c == ' ' || c == '\r' || c == '\t')
+        for (const TokenMatch& match : itr->second)
         {
-            ++sourceCur;
-            continue;
-        }
-
-        // Ignore newline
-        if (c == '\n')
-        {
-            ++sourceCur;
-            ++line;
-            continue;
-        }
-
-        // Match token?
-        bool foundMatch = false;
-        auto itr = matches.find(c);
-        if (itr != matches.end())
-        {
-            for (const TokenMatch& match : itr->second)
+            bool isMatch = true;
+            int matchLength = (int)match.m_text.size();
+            const char* testCur = m_sourceCur;
+            for (const char cMatch : match.m_text)
             {
-                bool isMatch = true;
-                int matchLength = (int)match.m_text.size();
-                const char* testCur = sourceCur;
-                for (const char cMatch : match.m_text)
+                if (testCur >= m_sourceEnd || *testCur != cMatch)
                 {
-                    if (testCur >= sourceEnd || *testCur != cMatch)
-                    {
-                        isMatch = false;
-                        break;
-                    }
-                    ++testCur;
-                }
-
-                if (isMatch)
-                {
-                    tokens.push_back(MakeToken(match.m_tokenType, sourceCur, sourceCur + matchLength, line));
-                    sourceCur += matchLength;
-                    foundMatch = true;
+                    isMatch = false;
                     break;
                 }
+                ++testCur;
+            }
+
+            if (isMatch)
+            {
+                m_tokens.push_back(MakeToken(match.m_tokenType, m_sourceCur, m_sourceCur + matchLength, m_line));
+                m_sourceCur += matchLength;
+                return true;
             }
         }
+    }
 
-        // Unable to find valid token
-        if (!foundMatch)
+    return false;
+}
+
+bool Scanner::ScanNumber()
+{
+    if (!isdigit(*m_sourceCur))
+    {
+        return false;
+    }
+
+    bool isValidNumber = true;
+    bool encounteredDecimal = false;
+    const char* testCur = m_sourceCur;
+    while (testCur < m_sourceEnd)
+    {
+        const char c = *testCur;
+        if (isdigit(c))
         {
-            LOG("Unexpected character '%c' at line %d", *sourceCur, line);
-            m_error = true;
+            ++testCur;
+        }
+        else if (c == '.' && !encounteredDecimal)
+        {
+            encounteredDecimal = true;
+            ++testCur;
+        }
+        else
+        {
             break;
         }
     }
 
-    // Newline at end of file 
-    if (!m_error)
-    {
-        tokens.push_back(MakeToken(TokenType::EndOfFile, sourceEnd, sourceEnd, line));
-    }
-
-    return tokens;
-}
-
-bool Scanner::Error() const
-{
-    return m_error;
+    int numberLength = int(testCur - m_sourceCur);
+    m_tokens.push_back(MakeToken(TokenType::Number, m_sourceCur, m_sourceCur + numberLength, m_line));
+    m_sourceCur += numberLength;
+    return true;
 }
 
 Token Scanner::MakeToken(const TokenType type, const char* sourceStart, const char* sourceEnd, const int line)

@@ -1,4 +1,8 @@
 for(;;)
 {
-    false = true;
+    false = 1;
+    false = 1234;
+    false = 1.2;
+    false = 12.34;
+    false = 12.34.;
 }
