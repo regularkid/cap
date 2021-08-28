@@ -29,7 +29,7 @@ void Scanner::ScanTokens(const std::string& source)
         // Scan function above may have already triggered an error
         if (!m_error)
         {
-            LOG("%d: Unexpected character '%c'", m_line, *m_sourceCur);
+            COMPILE_ERROR("Line %d: Unexpected character '%c'", m_line, *m_sourceCur);
             m_error = true;
         }
 
@@ -203,7 +203,7 @@ bool Scanner::ScanString()
 
     if (*testCur != '"')
     {
-        LOG("%d: Expected string terminator", m_line);
+        COMPILE_ERROR("Line %d: Expected string terminator", m_line);
         m_error = true;
         return false;
     }

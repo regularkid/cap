@@ -12,13 +12,22 @@ void Runtime::Execute(const Bytecode* code)
     bool done = false;
     while (!done)
     {
-        const Op op = static_cast<Op>(ReadByte());
-        switch (op)
+        m_curOp = static_cast<Op>(ReadByte());
+        switch (m_curOp)
         {
             case Op::End: done = true;  break;
             case Op::Push: ExecutePush(); break;
             case Op::Pop: ExecutePop(); break;
             case Op::Print: ExecutePrint(); break;
+            case Op::Add: ExecuteAdd(); break;
+            case Op::Subtract: ExecuteSubtract(); break;
+            case Op::Multiply: ExecuteMultiply(); break;
+            case Op::Divide: ExecuteDivide(); break;
+        }
+
+        if (m_error)
+        {
+            break;
         }
     }
 }
@@ -27,21 +36,6 @@ Byte Runtime::ReadByte()
 {
     return *m_ip++;
 }
-
-struct Box2
-{
-    union
-    {
-        int intr;
-        struct
-        {
-            int  a;
-            int  b;
-            int  c;
-            int  d;
-        } s;
-    };
-};
 
 void Runtime::ExecutePush()
 {
@@ -56,4 +50,84 @@ void Runtime::ExecutePop()
 void Runtime::ExecutePrint()
 {
     LOG("Stack Value: %.02f", m_stack.top().as.number);
+}
+
+void Runtime::ExecuteAdd()
+{
+    Value b = m_stack.top();
+    m_stack.pop();
+    Value a = m_stack.top();
+    m_stack.pop();
+
+    if (a.m_type == ValueType::Number && b.m_type == ValueType::Number)
+    {
+        m_stack.push(a.as.number + b.as.number);
+    }
+    else
+    {
+        RUNTIME_ERROR("Unable to add non-number types: %s + %s", ValueToString(a).c_str(), ValueToString(b).c_str());
+        m_error = true;
+    }
+}
+
+void Runtime::ExecuteSubtract()
+{
+    Value b = m_stack.top();
+    m_stack.pop();
+    Value a = m_stack.top();
+    m_stack.pop();
+
+    if (a.m_type == ValueType::Number && b.m_type == ValueType::Number)
+    {
+        m_stack.push(a.as.number - b.as.number);
+    }
+    else
+    {
+        RUNTIME_ERROR("Unable to subtract non-number types: %s - %s", ValueToString(a).c_str(), ValueToString(b).c_str());
+        m_error = true;
+    }
+}
+
+void Runtime::ExecuteMultiply()
+{
+    Value b = m_stack.top();
+    m_stack.pop();
+    Value a = m_stack.top();
+    m_stack.pop();
+
+    if (a.m_type == ValueType::Number && b.m_type == ValueType::Number)
+    {
+        m_stack.push(a.as.number * b.as.number);
+    }
+    else
+    {
+        RUNTIME_ERROR("Unable to multiply non-number types: %s * %s", ValueToString(a).c_str(), ValueToString(b).c_str());
+        m_error = true;
+    }
+}
+
+void Runtime::ExecuteDivide()
+{
+    Value b = m_stack.top();
+    m_stack.pop();
+    Value a = m_stack.top();
+    m_stack.pop();
+
+    if (a.m_type == ValueType::Number && b.m_type == ValueType::Number)
+    {
+        if (b.as.number != 0.0f)
+        {
+            m_stack.push(a.as.number / b.as.number);
+        }
+        else
+        {
+            RUNTIME_ERROR("Divide by zero: %s / %s", ValueToString(a).c_str(), ValueToString(b).c_str());
+            m_error = true;
+        }
+    }
+    else
+    {
+        RUNTIME_ERROR("Unable to divide non-number types: %s / %s", ValueToString(a).c_str(), ValueToString(b).c_str());
+        m_error = true;
+    }
 }

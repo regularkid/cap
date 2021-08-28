@@ -144,6 +144,7 @@
     <ClCompile Include="..\Code\Scanner.cpp" />
     <ClCompile Include="..\Code\Token.cpp" />
     <ClCompile Include="..\Code\Runtime.cpp" />
+    <ClCompile Include="..\Code\Value.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Code\Bytecode.h" />

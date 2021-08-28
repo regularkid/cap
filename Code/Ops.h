@@ -4,8 +4,15 @@
 
 enum class Op
 {
+    None,
+    End,
+
     Push,
     Pop,
     Print,
-    End,
+
+    Add,
+    Subtract,
+    Multiply,
+    Divide,
 };

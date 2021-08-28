@@ -2,6 +2,7 @@
 
 #include <stack>
 #include "Bytecode.h"
+#include "Ops.h"
 #include "Value.h"
 
 class Runtime
@@ -15,8 +16,15 @@ private:
     void ExecutePush();
     void ExecutePop();
     void ExecutePrint();
+    void ExecuteAdd();
+    void ExecuteSubtract();
+    void ExecuteMultiply();
+    void ExecuteDivide();
+
+    bool m_error = false;
 
     const Bytecode* m_code;
     const Byte* m_ip = nullptr;
+    Op m_curOp = Op::None;
     std::stack<Value> m_stack;
 };

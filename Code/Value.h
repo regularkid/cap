@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 enum class ValueType
 {
     Bool,
@@ -27,3 +29,5 @@ struct Value
     ValueType m_type;
     ValueUnion as;
 };
+
+std::string ValueToString(const Value& value);
