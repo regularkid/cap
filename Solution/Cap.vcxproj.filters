@@ -27,7 +27,7 @@
     <ClCompile Include="..\Code\Token.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\VM.cpp">
+    <ClCompile Include="..\Code\Runtime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -44,9 +44,6 @@
     <ClInclude Include="..\Code\Scanner.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Code\VM.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\Code\Bytecode.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -54,6 +51,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Code\Value.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Runtime.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

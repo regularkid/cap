@@ -1,10 +1,10 @@
 #include <functional>
 #include <unordered_map>
-#include "VM.h"
+#include "Runtime.h"
 #include "Ops.h"
 #include "Utils.h"
 
-void VM::Run(const Bytecode* code)
+void Runtime::Execute(const Bytecode* code)
 {
     m_code = code;
     m_ip = &((*m_code)[0]);
@@ -23,22 +23,37 @@ void VM::Run(const Bytecode* code)
     }
 }
 
-Byte VM::ReadByte()
+Byte Runtime::ReadByte()
 {
     return *m_ip++;
 }
 
-void VM::ExecutePush()
+struct Box2
+{
+    union
+    {
+        int intr;
+        struct
+        {
+            int  a;
+            int  b;
+            int  c;
+            int  d;
+        } s;
+    };
+};
+
+void Runtime::ExecutePush()
 {
     m_stack.push(Value(static_cast<float>(ReadByte())));
 }
 
-void VM::ExecutePop()
+void Runtime::ExecutePop()
 {
     m_stack.pop();
 }
 
-void VM::ExecutePrint()
+void Runtime::ExecutePrint()
 {
     LOG("Stack Value: %.02f", m_stack.top().as.number);
 }

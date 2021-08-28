@@ -26,7 +26,7 @@ void Cap::Run(const std::string& source)
     code.push_back(static_cast<Byte>(Op::Print));
     code.push_back(static_cast<Byte>(Op::Pop));
     code.push_back(static_cast<Byte>(Op::End));
-    m_vm.Run(&code);
+    m_runtime.Execute(&code);
 
     // Interpret
 }

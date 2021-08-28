@@ -1,8 +1,8 @@
 #pragma once
 
 #include <string>
+#include "Runtime.h"
 #include "Scanner.h"
-#include "VM.h"
 
 class Cap
 {
@@ -11,5 +11,5 @@ public:
 
 private:
     Scanner m_scanner;
-    VM m_vm;
+    Runtime m_runtime;
 };

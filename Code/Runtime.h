@@ -4,10 +4,10 @@
 #include "Bytecode.h"
 #include "Value.h"
 
-class VM
+class Runtime
 {
 public:
-    void Run(const Bytecode* code);
+    void Execute(const Bytecode* code);
 
 private:
     inline Byte ReadByte();
