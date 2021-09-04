@@ -1,8 +1,8 @@
 #pragma once
 
 #include <string>
+#include "Compiler.h"
 #include "Runtime.h"
-#include "Scanner.h"
 
 class Cap
 {
@@ -10,6 +10,6 @@ public:
     void Run(const std::string& source);
 
 private:
-    Scanner m_scanner;
+    Compiler m_compiler;
     Runtime m_runtime;
 };
