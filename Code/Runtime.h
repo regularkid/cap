@@ -26,5 +26,5 @@ private:
     const Bytecode* m_code;
     const Byte* m_ip = nullptr;
     Op m_curOp = Op::None;
-    std::stack<Value> m_stack;
+    std::vector<Value> m_stack;
 };

@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Code\Bytecode.cpp" />
     <ClCompile Include="..\Code\Cap.cpp" />
     <ClCompile Include="..\Code\Compiler.cpp" />
     <ClCompile Include="..\Code\Main.cpp" />

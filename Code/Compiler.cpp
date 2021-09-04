@@ -1,7 +1,7 @@
 #include "Compiler.h"
 #include "Token.h"
 
-//#define DEBUG_PRINT_TOKENS
+#define DEBUG_COMPILER
 
 void Compiler::Compile(const std::string& source)
 {
@@ -12,7 +12,12 @@ void Compiler::Compile(const std::string& source)
         return;
     }
 
-#ifdef DEBUG_PRINT_TOKENS
+#ifdef DEBUG_COMPILER
     PrintTokens(m_scanner.GetTokens());
 #endif
+
+    for (const Token& token : m_scanner.GetTokens())
+    {
+
+    }
 }

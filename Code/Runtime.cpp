@@ -4,6 +4,8 @@
 #include "Ops.h"
 #include "Utils.h"
 
+#define DEBUG_RUNTIME
+
 void Runtime::Execute(const Bytecode* code)
 {
     m_code = code;
@@ -12,6 +14,19 @@ void Runtime::Execute(const Bytecode* code)
     bool done = false;
     while (!done)
     {
+#ifdef DEBUG_RUNTIME
+        LOG("---------- Begin Trace ----------");
+        LOG("Stack:");
+        for (const Value& value : m_stack)
+        {
+            LOG("%s", ValueToString(value).c_str());
+        }
+
+        LOG("Op:");
+        LOG("%s", BytecodeOpToString(m_ip).c_str());
+        LOG("---------- End Trace ------------");
+#endif
+
         m_curOp = static_cast<Op>(ReadByte());
         switch (m_curOp)
         {
@@ -39,29 +54,29 @@ Byte Runtime::ReadByte()
 
 void Runtime::ExecutePush()
 {
-    m_stack.push(Value(static_cast<float>(ReadByte())));
+    m_stack.push_back(Value(static_cast<float>(ReadByte())));
 }
 
 void Runtime::ExecutePop()
 {
-    m_stack.pop();
+    m_stack.pop_back();
 }
 
 void Runtime::ExecutePrint()
 {
-    LOG("Stack Value: %.02f", m_stack.top().as.number);
+    LOG("Stack Value: %.02f", m_stack.back().as.number);
 }
 
 void Runtime::ExecuteAdd()
 {
-    Value b = m_stack.top();
-    m_stack.pop();
-    Value a = m_stack.top();
-    m_stack.pop();
+    Value b = m_stack.back();
+    m_stack.pop_back();
+    Value a = m_stack.back();
+    m_stack.pop_back();
 
     if (a.m_type == ValueType::Number && b.m_type == ValueType::Number)
     {
-        m_stack.push(a.as.number + b.as.number);
+        m_stack.push_back(a.as.number + b.as.number);
     }
     else
     {
@@ -72,14 +87,14 @@ void Runtime::ExecuteAdd()
 
 void Runtime::ExecuteSubtract()
 {
-    Value b = m_stack.top();
-    m_stack.pop();
-    Value a = m_stack.top();
-    m_stack.pop();
+    Value b = m_stack.back();
+    m_stack.pop_back();
+    Value a = m_stack.back();
+    m_stack.pop_back();
 
     if (a.m_type == ValueType::Number && b.m_type == ValueType::Number)
     {
-        m_stack.push(a.as.number - b.as.number);
+        m_stack.push_back(a.as.number - b.as.number);
     }
     else
     {
@@ -90,14 +105,14 @@ void Runtime::ExecuteSubtract()
 
 void Runtime::ExecuteMultiply()
 {
-    Value b = m_stack.top();
-    m_stack.pop();
-    Value a = m_stack.top();
-    m_stack.pop();
+    Value b = m_stack.back();
+    m_stack.pop_back();
+    Value a = m_stack.back();
+    m_stack.pop_back();
 
     if (a.m_type == ValueType::Number && b.m_type == ValueType::Number)
     {
-        m_stack.push(a.as.number * b.as.number);
+        m_stack.push_back(a.as.number * b.as.number);
     }
     else
     {
@@ -108,16 +123,16 @@ void Runtime::ExecuteMultiply()
 
 void Runtime::ExecuteDivide()
 {
-    Value b = m_stack.top();
-    m_stack.pop();
-    Value a = m_stack.top();
-    m_stack.pop();
+    Value b = m_stack.back();
+    m_stack.pop_back();
+    Value a = m_stack.back();
+    m_stack.pop_back();
 
     if (a.m_type == ValueType::Number && b.m_type == ValueType::Number)
     {
         if (b.as.number != 0.0f)
         {
-            m_stack.push(a.as.number / b.as.number);
+            m_stack.push_back(a.as.number / b.as.number);
         }
         else
         {
