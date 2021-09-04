@@ -37,8 +37,8 @@ void Compiler::Compile(const std::string& source)
         LOG("%d: %s", constIdx++, ValueToString(value).c_str());
     }
 
-    LOG("Ops:");
-    // TODO LOG("%s", ExecutableOpToString(m_ip).c_str());
+    LOG("Code:");
+    LOG("%d bytes", static_cast<int>(m_executable.m_code.size()));
     LOG("---------- End Executable ------------");
 #endif
 }
