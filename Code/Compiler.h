@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "Bytecode.h"
+#include "Executable.h"
 #include "Scanner.h"
 
 class Compiler
@@ -13,5 +13,5 @@ public:
 private:
     bool m_error = false;
     Scanner m_scanner;
-    Bytecode m_code;
+    Executable m_executable;
 };

@@ -1,8 +1,8 @@
-#include "Bytecode.h"
+#include "Executable.h"
 #include "Ops.h"
 #include "Value.h"
 
-std::string BytecodeOpToString(const Byte* ip)
+std::string ExecutableOpToString(const Byte* ip)
 {
     char strBuff[128];
     strBuff[0] = '\0';

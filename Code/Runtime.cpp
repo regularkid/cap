@@ -6,10 +6,10 @@
 
 #define DEBUG_RUNTIME
 
-void Runtime::Execute(const Bytecode* code)
+void Runtime::Execute(const Executable* executable)
 {
-    m_code = code;
-    m_ip = &((*m_code)[0]);
+    m_executable = executable;
+    m_ip = &(m_executable->m_code[0]);
 
     bool done = false;
     while (!done)
@@ -23,7 +23,7 @@ void Runtime::Execute(const Bytecode* code)
         }
 
         LOG("Op:");
-        LOG("%s", BytecodeOpToString(m_ip).c_str());
+        LOG("%s", ExecutableOpToString(m_ip).c_str());
         LOG("---------- End Trace ------------");
 #endif
 

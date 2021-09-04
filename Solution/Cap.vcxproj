@@ -139,7 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Code\Bytecode.cpp" />
+    <ClCompile Include="..\Code\Executable.cpp" />
     <ClCompile Include="..\Code\Cap.cpp" />
     <ClCompile Include="..\Code\Compiler.cpp" />
     <ClCompile Include="..\Code\Main.cpp" />
@@ -149,7 +149,7 @@
     <ClCompile Include="..\Code\Value.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Code\Bytecode.h" />
+    <ClInclude Include="..\Code\Executable.h" />
     <ClInclude Include="..\Code\Cap.h" />
     <ClInclude Include="..\Code\Compiler.h" />
     <ClInclude Include="..\Code\Ops.h" />

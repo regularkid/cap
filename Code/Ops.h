@@ -1,12 +1,11 @@
 #pragma once
 
-#include "Bytecode.h"
-
 enum class Op
 {
     None,
     End,
 
+    Constant,
     Push,
     Pop,
     Print,

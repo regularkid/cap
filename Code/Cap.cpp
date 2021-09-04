@@ -11,22 +11,22 @@ void Cap::Run(const std::string& source)
         return;
     }
 
-    // Generate bytecode
-    Bytecode code;
-    code.push_back(static_cast<Byte>(Op::Push));
-    code.push_back(static_cast<Byte>(12));
+    // DEBUG: Generate bytecode
+    Executable executable;
+    executable.m_code.push_back(static_cast<Byte>(Op::Push));
+    executable.m_code.push_back(static_cast<Byte>(12));
 
-    code.push_back(static_cast<Byte>(Op::Push));
-    code.push_back(static_cast<Byte>(34));
+    executable.m_code.push_back(static_cast<Byte>(Op::Push));
+    executable.m_code.push_back(static_cast<Byte>(34));
 
-    code.push_back(static_cast<Byte>(Op::Add));
+    executable.m_code.push_back(static_cast<Byte>(Op::Add));
 
-    code.push_back(static_cast<Byte>(Op::Print));
-    code.push_back(static_cast<Byte>(Op::Pop));
+    executable.m_code.push_back(static_cast<Byte>(Op::Print));
+    executable.m_code.push_back(static_cast<Byte>(Op::Pop));
 
-    code.push_back(static_cast<Byte>(Op::End));
+    executable.m_code.push_back(static_cast<Byte>(Op::End));
 
-    m_runtime.Execute(&code);
+    m_runtime.Execute(&executable);
 
     // Interpret
 }

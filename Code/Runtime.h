@@ -1,14 +1,14 @@
 #pragma once
 
 #include <stack>
-#include "Bytecode.h"
+#include "Executable.h"
 #include "Ops.h"
 #include "Value.h"
 
 class Runtime
 {
 public:
-    void Execute(const Bytecode* code);
+    void Execute(const Executable* executable);
 
 private:
     inline Byte ReadByte();
@@ -23,7 +23,7 @@ private:
 
     bool m_error = false;
 
-    const Bytecode* m_code;
+    const Executable* m_executable;
     const Byte* m_ip = nullptr;
     Op m_curOp = Op::None;
     std::vector<Value> m_stack;

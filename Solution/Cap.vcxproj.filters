@@ -36,7 +36,7 @@
     <ClCompile Include="..\Code\Compiler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\Bytecode.cpp">
+    <ClCompile Include="..\Code\Executable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -53,9 +53,6 @@
     <ClInclude Include="..\Code\Scanner.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Code\Bytecode.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\Code\Ops.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -66,6 +63,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Code\Compiler.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Executable.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

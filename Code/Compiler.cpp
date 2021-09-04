@@ -1,7 +1,7 @@
 #include "Compiler.h"
 #include "Token.h"
 
-#define DEBUG_COMPILER
+//#define DEBUG_COMPILER
 
 void Compiler::Compile(const std::string& source)
 {
