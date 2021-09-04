@@ -13,6 +13,7 @@ public:
 private:
     inline Byte ReadByte();
 
+    void ExecuteConstant();
     void ExecutePush();
     void ExecutePop();
     void ExecutePrint();

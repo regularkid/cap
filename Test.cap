@@ -1,8 +1,8 @@
 for(;;)
 {
     // Comment line
-    false = 1;
-    testIdentifier = 1234;
+    false = 12;
+    testIdentifier = 36;
     false = 1.2;
     var myVar = 12.34;
     blah=12.34.;

@@ -31,6 +31,7 @@ void Runtime::Execute(const Executable* executable)
         switch (m_curOp)
         {
             case Op::End: done = true;  break;
+            case Op::Constant: ExecuteConstant(); break;
             case Op::Push: ExecutePush(); break;
             case Op::Pop: ExecutePop(); break;
             case Op::Print: ExecutePrint(); break;
@@ -50,6 +51,13 @@ void Runtime::Execute(const Executable* executable)
 Byte Runtime::ReadByte()
 {
     return *m_ip++;
+}
+
+void Runtime::ExecuteConstant()
+{
+    const int constantIdx = ReadByte();
+    const Value& value = m_executable->m_constants[constantIdx];
+    m_stack.push_back(value);
 }
 
 void Runtime::ExecutePush()
