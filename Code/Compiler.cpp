@@ -65,7 +65,7 @@ void Compiler::ConsumeExpectedToken(const TokenType tokenType)
 {
     if (m_curToken.m_type != tokenType)
     {
-        COMPILE_ERROR("%d: Expected %s", m_curToken.m_line, TokenTypeToString(tokenType));
+        COMPILE_ERROR("%d: Expected '%s'", m_curToken.m_line, TokenTypeToUserFacingString(tokenType));
     }
 
     AdvanceToken();
@@ -104,6 +104,11 @@ void Compiler::CompilePrecedence(const ExprPrecedence exprPrecedence)
         case TokenType::ParenLeft: CompileGrouping(); break;
     }
 
+    if (m_error)
+    {
+        return;
+    }
+
     // Infix expression
     bool infixDone = false;
     while (!infixDone)
@@ -115,6 +120,11 @@ void Compiler::CompilePrecedence(const ExprPrecedence exprPrecedence)
             case TokenType::Star: if (exprPrecedence <= ExprPrecedence::Factor) { CompileBinary(); } else { infixDone = true; }  break;
             case TokenType::Slash: if (exprPrecedence <= ExprPrecedence::Factor) { CompileBinary(); } else { infixDone = true; }  break;
             default: infixDone = true; break;
+        }
+
+        if (m_error)
+        {
+            return;
         }
     }
 }
@@ -147,6 +157,12 @@ void Compiler::CompileGrouping()
 {
     AdvanceToken();
     CompileExpression();
+
+    if (m_error)
+    {
+        return;
+    }
+
     ConsumeExpectedToken(TokenType::ParenRight);
 }
 

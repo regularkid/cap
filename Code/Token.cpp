@@ -40,7 +40,49 @@ const char* TokenTypeToString(const TokenType tokenType)
         case TokenType::EndOfFile: return "EndOfFile";
     }
 
-    return "UnexpectedToken";
+    return "UnknownToken";
+}
+
+const char* TokenTypeToUserFacingString(const TokenType tokenType)
+{
+    switch (tokenType)
+    {
+        case TokenType::None: return "--";
+        case TokenType::BraceLeft: return "[";
+        case TokenType::BraceRight: return "]";
+        case TokenType::Comma: return ",";
+        case TokenType::Dot: return ".";
+        case TokenType::Equals: return "=";
+        case TokenType::Exclamation: return "!";
+        case TokenType::GreaterThan: return ">";
+        case TokenType::LessThan: return "<";
+        case TokenType::Minus: return "-";
+        case TokenType::ParenLeft: return "(";
+        case TokenType::ParenRight: return ")";
+        case TokenType::Plus: return "+";
+        case TokenType::Semicolon: return ";";
+        case TokenType::Slash: return "/";
+        case TokenType::Star: return "*";
+        case TokenType::ExclamationEquals: return "!=";
+        case TokenType::EqualsEquals: return "==";
+        case TokenType::GreaterThanEquals: return ">=";
+        case TokenType::LessThanEquals: return "<=";
+        case TokenType::Else: return "else";
+        case TokenType::For: return "for";
+        case TokenType::False: return "false";
+        case TokenType::If: return "if";
+        case TokenType::Null: return "null";
+        case TokenType::Return: return "return";
+        case TokenType::True: return "true";
+        case TokenType::Var: return "var";
+        case TokenType::While: return "while";
+        case TokenType::Identifier: return "[Identifier]";
+        case TokenType::Number: return "[Number]";
+        case TokenType::String: return "[String]";
+        case TokenType::EndOfFile: return "end of file";
+    }
+
+    return "Unknown Token";
 }
 
 void PrintToken(const Token& token)
