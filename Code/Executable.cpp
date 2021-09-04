@@ -17,6 +17,8 @@ std::string ExecutableOpToString(const Byte* ip)
             snprintf(strBuff, sizeof(strBuff), "[Constant %d]", constantIdx);
         } break;
 
+        case Op::Negate: snprintf(strBuff, sizeof(strBuff), "[Negate]"); break;
+
         case Op::Push:
         {
             // TEMP

@@ -2,6 +2,8 @@
 #include "Scanner.h"
 #include "Utils.h"
 
+#define SCANNER_ERROR(s, ...) LOG("[Compile Error] "##s, __VA_ARGS__); printf("\n"); m_error = true;
+
 struct TokenMatch
 {
     std::string m_text;
@@ -29,8 +31,7 @@ void Scanner::ScanTokens(const std::string& source)
         // Scan function above may have already triggered an error
         if (!m_error)
         {
-            COMPILE_ERROR("Line %d: Unexpected character '%c'", m_line, *m_sourceCur);
-            m_error = true;
+            SCANNER_ERROR("Line %d: Unexpected character '%c'", m_line, *m_sourceCur);
         }
 
         break;
@@ -43,9 +44,15 @@ void Scanner::ScanTokens(const std::string& source)
     }
 }
 
-bool Scanner::Error() const
+const Token& Scanner::GetToken(const int idx) const
 {
-    return m_error;
+    if (idx < 0 || idx >= m_tokens.size())
+    {
+        static Token s_invalidToken;
+        return s_invalidToken;
+    }
+
+    return m_tokens[idx];
 }
 
 bool Scanner::ScanWhitespace()
@@ -203,8 +210,7 @@ bool Scanner::ScanString()
 
     if (*testCur != '"')
     {
-        COMPILE_ERROR("Line %d: Expected string terminator", m_line);
-        m_error = true;
+        SCANNER_ERROR("Line %d: Expected string terminator", m_line);
         return false;
     }
 

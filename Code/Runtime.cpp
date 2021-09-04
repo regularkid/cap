@@ -6,6 +6,8 @@
 
 #define DEBUG_RUNTIME
 
+#define RUNTIME_ERROR(s, ...) LOG("[Runtime Error] "##s, __VA_ARGS__); printf("\n"); m_error = true;
+
 void Runtime::Execute(const Executable* executable)
 {
     if (!executable)
@@ -38,6 +40,7 @@ void Runtime::Execute(const Executable* executable)
         {
             case Op::End: done = true;  break;
             case Op::Constant: ExecuteConstant(); break;
+            case Op::Negate: ExecuteNegate(); break;
             case Op::Push: ExecutePush(); break;
             case Op::Pop: ExecutePop(); break;
             case Op::Print: ExecutePrint(); break;
@@ -64,6 +67,22 @@ void Runtime::ExecuteConstant()
     const int constantIdx = ReadByte();
     const Value& value = m_executable->m_constants[constantIdx];
     m_stack.push_back(value);
+}
+
+void Runtime::ExecuteNegate()
+{
+    Value value = m_stack.back();
+    m_stack.pop_back();
+
+    if (value.m_type != ValueType::Number)
+    {
+        RUNTIME_ERROR("Can only negate number values");
+    }
+    else
+    {
+        value.as.number = -value.as.number;
+        m_stack.push_back(value);
+    }
 }
 
 void Runtime::ExecutePush()
@@ -95,7 +114,6 @@ void Runtime::ExecuteAdd()
     else
     {
         RUNTIME_ERROR("Unable to add non-number types: %s + %s", ValueToString(a).c_str(), ValueToString(b).c_str());
-        m_error = true;
     }
 }
 
@@ -113,7 +131,6 @@ void Runtime::ExecuteSubtract()
     else
     {
         RUNTIME_ERROR("Unable to subtract non-number types: %s - %s", ValueToString(a).c_str(), ValueToString(b).c_str());
-        m_error = true;
     }
 }
 
@@ -131,7 +148,6 @@ void Runtime::ExecuteMultiply()
     else
     {
         RUNTIME_ERROR("Unable to multiply non-number types: %s * %s", ValueToString(a).c_str(), ValueToString(b).c_str());
-        m_error = true;
     }
 }
 
@@ -151,12 +167,10 @@ void Runtime::ExecuteDivide()
         else
         {
             RUNTIME_ERROR("Divide by zero: %s / %s", ValueToString(a).c_str(), ValueToString(b).c_str());
-            m_error = true;
         }
     }
     else
     {
         RUNTIME_ERROR("Unable to divide non-number types: %s / %s", ValueToString(a).c_str(), ValueToString(b).c_str());
-        m_error = true;
     }
 }

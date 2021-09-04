@@ -1,9 +1,9 @@
 #include "Token.h"
 #include "Utils.h"
 
-const char* TokenTypeToString(const Token& token)
+const char* TokenTypeToString(const TokenType tokenType)
 {
-    switch (token.m_type)
+    switch (tokenType)
     {
         case TokenType::None: return "None";
         case TokenType::BraceLeft: return "BraceLeft";
@@ -47,11 +47,11 @@ void PrintToken(const Token& token)
 {
     if (token.m_type != TokenType::EndOfFile)
     {
-        LOG("[%s: \"%.*s\"]:%d", TokenTypeToString(token), int(token.m_sourceEnd - token.m_sourceStart), token.m_sourceStart, token.m_line);
+        LOG("[%s: \"%.*s\"]:%d", TokenTypeToString(token.m_type), int(token.m_sourceEnd - token.m_sourceStart), token.m_sourceStart, token.m_line);
     }
     else
     {
-        LOG("[%s]:%d", TokenTypeToString(token), token.m_line);
+        LOG("[%s]:%d", TokenTypeToString(token.m_type), token.m_line);
     }
 }
 

@@ -7,8 +7,9 @@ class Scanner
 {
 public:
     void ScanTokens(const std::string& source);
-    const Tokens& GetTokens() { return m_tokens; }
-    bool Error() const;
+    const Tokens& GetTokens() const { return m_tokens; }
+    const Token& GetToken(const int idx) const;
+    bool Error() const { return m_error; }
 
 private:
     bool ScanWhitespace();

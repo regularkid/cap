@@ -59,6 +59,6 @@ struct Token
 
 using Tokens = std::vector<Token>;
 
-const char* TokenTypeToString(const Token& token);
+const char* TokenTypeToString(const TokenType tokenType);
 void PrintToken(const Token& token);
 void PrintTokens(const Tokens& tokens);

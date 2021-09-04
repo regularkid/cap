@@ -6,6 +6,7 @@ enum class Op
     End,
 
     Constant,
+    Negate,
     Push,
     Pop,
     Print,
