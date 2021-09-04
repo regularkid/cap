@@ -11,6 +11,12 @@ std::string ExecutableOpToString(const Byte* ip)
     switch (op)
     {
         case Op::End: snprintf(strBuff, sizeof(strBuff), "[End]"); break;
+        case Op::Constant:
+        {
+            int constantIdx = static_cast<int>(*(++ip));
+            snprintf(strBuff, sizeof(strBuff), "[Constant %d]", constantIdx);
+        } break;
+
         case Op::Push:
         {
             // TEMP
@@ -24,6 +30,7 @@ std::string ExecutableOpToString(const Byte* ip)
         case Op::Subtract: snprintf(strBuff, sizeof(strBuff), "[Subtract]"); break;
         case Op::Multiply: snprintf(strBuff, sizeof(strBuff), "[Multiply]"); break;
         case Op::Divide: snprintf(strBuff, sizeof(strBuff), "[Divide]"); break;
+        default: snprintf(strBuff, sizeof(strBuff), "[ERROR - Unknown Op code]");
     }
 
     return strBuff;

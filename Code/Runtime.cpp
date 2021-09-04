@@ -8,6 +8,12 @@
 
 void Runtime::Execute(const Executable* executable)
 {
+    if (!executable)
+    {
+        LOG("Unable to execute: Invalid executable");
+        return;
+    }
+
     m_executable = executable;
     m_ip = &(m_executable->m_code[0]);
 
