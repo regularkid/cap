@@ -130,6 +130,7 @@ bool Scanner::ScanSymbolKeyword()
     auto itr = matches.find(*m_sourceCur);
     if (itr != matches.end())
     {
+        const bool isPossibleKeyword = isalpha(*m_sourceCur);
         for (const TokenMatch& match : itr->second)
         {
             bool isMatch = true;
@@ -147,6 +148,16 @@ bool Scanner::ScanSymbolKeyword()
 
             if (isMatch)
             {
+                // If keyword, ensure there isn't another alpha-numeric character afterwards (e.g. we shouldn't match "var" for "variableNamme")
+                if (isPossibleKeyword)
+                {
+                    const char* nextChar = m_sourceCur + matchLength + 1;
+                    if (nextChar < m_sourceEnd && isalnum(*nextChar))
+                    {
+                        continue;
+                    }
+                }
+
                 m_tokens.push_back(MakeToken(match.m_tokenType, m_sourceCur, m_sourceCur + matchLength, m_line));
                 m_sourceCur += matchLength;
                 return true;
